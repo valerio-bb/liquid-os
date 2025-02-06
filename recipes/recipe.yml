@@ -36,6 +36,15 @@ modules:
       install:
         - org.mozilla.firefox
         - org.gnome.Loupe
+        - org.gnome.gparted # GParted
+        - org.telegram.desktop # Telegram Desktop
+        - org.videolan.VLC # VLC Media Player
+        - org.krita.krita # Krita
+        - org.darktable.Darktable # Darktable
+        - org.blender.Blender # Blender
+        - org.onlyoffice.desktopeditor # OnlyOffice Desktop Editors
+        - org.transmissionbt.Transmission # Transmission
+        - org.jellyfin.Jellyfin # Jellyfin
       remove:
         - org.gnome.eog
     user: {} # Also add Flathub user repo, but no user packages
