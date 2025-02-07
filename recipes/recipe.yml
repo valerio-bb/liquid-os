@@ -42,7 +42,7 @@ modules:
         - org.darktable.Darktable # Darktable
         - org.blender.Blender # Blender
         - org.onlyoffice.desktopeditors # OnlyOffice Desktop Editors
-        - org.transmissionbt.Transmission # Transmission
+        - com.transmissionbt.Transmission # Transmission
         - org.jellyfin.JellyfinServer # Jellyfin
       remove:
         - org.gnome.eog
