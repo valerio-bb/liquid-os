@@ -28,14 +28,12 @@ modules:
     install:
       skip-unavailable: true
       packages:
-        - install-weak-deps: false
-          packages:
-            - starship
-            - steam
+        - starship
+        - steam
     remove:
       packages:
-            - firefox
-            - firefox-langpacks
+        - firefox
+        - firefox-langpacks
 
 # OLD rpm-ostree        
 #  - type: rpm-ostree
