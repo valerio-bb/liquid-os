@@ -32,7 +32,6 @@ modules:
           packages:
             - starship
             - steam
-            - kernel-modules-extra
     remove:
       packages:
             - firefox
