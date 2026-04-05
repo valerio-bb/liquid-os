@@ -21,7 +21,6 @@ modules:
       nonfree: negativo17
       copr:
         - atim/starship
-        - trixieua/mutter-patched
       files:
         - https://negativo17.org/repos/fedora-steam.repo
         
