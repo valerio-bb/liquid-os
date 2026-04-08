@@ -29,10 +29,6 @@ modules:
       packages:
         - starship
         - steam
-    remove:
-      packages:
-        - firefox
-        - firefox-langpacks
 
 # OLD rpm-ostree        
 #  - type: rpm-ostree
@@ -54,7 +50,6 @@ modules:
         scope: system
         # If no repo information is specified, Flathub will be used by default
         install: # system flatpaks we want all users to have and not remove
-          - org.mozilla.firefox
           - org.gnome.Loupe
           - org.telegram.desktop # Telegram Desktop
           - org.videolan.VLC # VLC Media Player
