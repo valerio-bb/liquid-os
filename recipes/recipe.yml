@@ -59,6 +59,7 @@ modules:
           - org.onlyoffice.desktopeditors # OnlyOffice Desktop Editors
           - com.transmissionbt.Transmission # Transmission
           - org.jellyfin.JellyfinServer # Jellyfin
+          - com.cursor.Cursor # Cursor
       - scope: user # Also add Flathub user repo, but no user packages
 
 # OLD V1 default-flatpacks
