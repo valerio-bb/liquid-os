@@ -86,6 +86,8 @@ modules:
           - org.onlyoffice.desktopeditors # OnlyOffice Desktop Editors
           - com.transmissionbt.Transmission # Transmission
           - org.jellyfin.JellyfinServer # Jellyfin
+          - org.kde.kdenlive
+          - fr.handbrake.ghb
       - scope: user # Also add Flathub user repo, but no user packages
 
 # OLD V1 default-flatpacks
