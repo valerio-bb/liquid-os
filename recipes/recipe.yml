@@ -30,6 +30,33 @@ modules:
         - starship
         - steam
 
+  - type: script
+    snippets:
+      - |
+        echo "Installazione di Cursor..."
+        # Download AppImage
+        curl -Lo /tmp/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage"
+        chmod +x /tmp/cursor.appimage
+        
+        # Extract in /usr/lib
+        cd /tmp
+        ./cursor.appimage --appimage-extract
+        mv squashfs-root /usr/lib/cursor
+        
+        # Symbolic link
+        ln -s /usr/lib/cursor/cursor /usr/bin/cursor
+        
+        # Icon & KDE menu item
+        mkdir -p /usr/share/applications
+        cp /usr/lib/cursor/cursor.desktop /usr/share/applications/cursor.desktop
+        
+        # Fix path
+        sed -i 's|Exec=AppRun|Exec=/usr/bin/cursor --no-sandbox|g' /usr/share/applications/cursor.desktop
+        sed -i 's|Icon=cursor|Icon=/usr/lib/cursor/cursor.png|g' /usr/share/applications/cursor.desktop
+        
+        # Clean
+        rm /tmp/cursor.appimage
+
 # OLD rpm-ostree        
 #  - type: rpm-ostree
 #    repos:
@@ -59,7 +86,6 @@ modules:
           - org.onlyoffice.desktopeditors # OnlyOffice Desktop Editors
           - com.transmissionbt.Transmission # Transmission
           - org.jellyfin.JellyfinServer # Jellyfin
-          - com.cursor.Cursor # Cursor
       - scope: user # Also add Flathub user repo, but no user packages
 
 # OLD V1 default-flatpacks
