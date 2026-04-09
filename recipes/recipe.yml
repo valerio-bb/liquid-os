@@ -29,10 +29,8 @@ modules:
         set -e
         echo "--- TENTATIVO DOWNLOAD CURSOR (GOLDEN LINK) ---"
         
-        # URL suggerito da te
         URL="https://api2.cursor.sh/updates/download/golden/linux-x64/cursor/3.0"
         
-        # Tentiamo il download con retry e timeout lunghi
         curl -L --retry 5 --retry-delay 15 --connect-timeout 60 -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "$URL"
 
         chmod +x /usr/bin/cursor.appimage
