@@ -30,15 +30,23 @@ modules:
       - |
         echo "Installazione Cursor..."
         mkdir -p /usr/lib/cursor
+        # Scarico l'AppImage
         curl -L -f -o /usr/lib/cursor/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
         chmod +x /usr/lib/cursor/cursor.appimage
-        ln -sf /usr/lib/cursor/cursor.appimage /usr/bin/cursor
         
+        # Invece di un link, creiamo un eseguibile reale in /usr/bin
+        cat <<'EOF' > /usr/bin/cursor
+        #!/bin/bash
+        exec /usr/lib/cursor/cursor.appimage --no-sandbox "$@"
+        EOF
+        chmod +x /usr/bin/cursor
+        
+        # Creazione file Desktop
         mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
         Name=Cursor
-        Exec=/usr/bin/cursor --no-sandbox %U
+        Exec=/usr/bin/cursor %U
         Terminal=false
         Type=Application
         Icon=code
