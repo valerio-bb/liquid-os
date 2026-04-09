@@ -1,12 +1,14 @@
 name: liquid-os
-description: This is my personal OS image.
+description: My personal OS image.
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: stable
+
 modules:
   - type: files
     files:
       - source: system
         destination: /
+
   - type: dnf
     repos:
       cleanup: true
@@ -20,22 +22,22 @@ modules:
       packages:
         - starship
         - steam
+
   - type: script
     snippets:
       - |
-        echo "--- INSTALLAZIONE CURSOR ---"
-        # Download diretto
-        curl -L -f -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
+        echo "--- SCARICO CURSOR ---"
+        curl -L -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
         chmod +x /usr/bin/cursor.appimage
         
-        # Creazione wrapper con cat (più sicuro di printf)
+        echo "--- CREO WRAPPER ---"
         cat <<'EOF' > /usr/bin/cursor
         #!/bin/bash
         exec /usr/bin/cursor.appimage --no-sandbox "$@"
         EOF
         chmod +x /usr/bin/cursor
         
-        # Creazione file desktop
+        echo "--- CREO DESKTOP FILE ---"
         mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
@@ -47,7 +49,11 @@ modules:
         Categories=Development;TextEditor;
         EOF
 
-        echo "--- CONFIGURAZIONE FLATPAK ---"
+        echo "--- VERIFICA FINALE ---"
+        ls -lh /usr/bin/cursor*
+
+      - |
+        echo "--- CONFIGURO FLATPAK ---"
         mkdir -p /usr/share/ublue-os
         cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
         {
@@ -68,6 +74,7 @@ modules:
           }
         }
         EOF
+
   - type: default-flatpaks
     configurations:
       - notify: true
@@ -84,4 +91,5 @@ modules:
           - org.jellyfin.JellyfinServer
           - org.kde.kdenlive
           - fr.handbrake.ghb
+
   - type: signing
