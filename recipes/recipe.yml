@@ -24,48 +24,33 @@ modules:
       packages:
         - starship
         - steam
-
-  - type: script
+        
+- type: script
     snippets:
       - |
-        echo "Installazione di Cursor..."
-        curl -Lo /tmp/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage"
-        chmod +x /tmp/cursor.appimage
-        cd /tmp
-        ./cursor.appimage --appimage-extract
+        echo "Installazione Cursor..."
+        # Crea la cartella di destinazione
         mkdir -p /usr/lib/cursor
-        mv squashfs-root/* /usr/lib/cursor/
-        ln -sf /usr/lib/cursor/cursor /usr/bin/cursor
         
-        # Icon & Desktop Entry
-        mkdir -p /usr/share/applications
-        cp /usr/lib/cursor/cursor.desktop /usr/share/applications/cursor.desktop
-        sed -i 's|Exec=AppRun|Exec=/usr/bin/cursor --no-sandbox|g' /usr/share/applications/cursor.desktop
-        sed -i 's|Icon=cursor|Icon=/usr/lib/cursor/cursor.png|g' /usr/share/applications/cursor.desktop
-        rm /tmp/cursor.appimage
-
-      - |
-        echo "Forzo la configurazione Flatpak per Aurora..."
-        # Questo assicura che ujust veda la TUA lista invece di quella di default
-        mkdir -p /usr/share/ublue-os
-        cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
-        {
-          "system": {
-            "install": [
-              "org.gnome.Loupe",
-              "org.telegram.desktop",
-              "org.videolan.VLC",
-              "org.kde.krita",
-              "org.darktable.Darktable",
-              "org.blender.Blender",
-              "org.onlyoffice.desktopeditors",
-              "com.transmissionbt.Transmission",
-              "org.jellyfin.JellyfinServer",
-              "org.kde.kdenlive",
-              "fr.handbrake.ghb"
-            ]
-          }
-        }
+        # Scarica l'AppImage direttamente lì
+        curl -Lo /usr/lib/cursor/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage"
+        
+        # Rendi eseguibile
+        chmod +x /usr/lib/cursor/cursor.appimage
+        
+        # Crea il link simbolico in /usr/bin
+        ln -sf /usr/lib/cursor/cursor.appimage /usr/bin/cursor
+        
+        # Crea il file .desktop da zero
+        cat <<EOF > /usr/share/applications/cursor.desktop
+        [Desktop Entry]
+        Name=Cursor
+        Exec=/usr/bin/cursor --no-sandbox %U
+        Terminal=false
+        Type=Application
+        Icon=code
+        Categories=Development;TextEditor;
+        Comment=AI Powered Code Editor
         EOF
 
   - type: default-flatpaks
