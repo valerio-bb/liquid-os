@@ -1,22 +1,3 @@
-[07:50:45 DEBUG] => Retrieving schema from https://schema.blue-build.org/modules/rpm-ostree-v1.json
-[07:50:45 DEBUG] => Retrieving schema from https://schema.blue-build.org/modules/rpm-ostree-latest.json
-[07:50:45 DEBUG] => Retrieving schema from https://schema.blue-build.org/modules/dnf-v1.json
-[07:50:45 DEBUG] => Validating recipe ./recipes/recipe.yml
-[07:50:45 ERROR] => Failed:
-  × Recipe ./recipes/recipe.yml failed to validate
-  ╰─▶   × Failed to deserialize recipe ./recipes/recipe.yml
-        ╰─▶ did not find expected key at line 28 column 1, while parsing a block mapping at line 2 column 1
-      
-        Try running with `-vv` for trace logging.
-        You can also open an issue at https://github.com/blue-build/cli/issues
-
-  help: Use `bluebuild validate --all-errors ./recipes/recipe.yml` to view more information.
-        If you're using a local module, be sure to add `source: local` to the module entry
-
-  Try running with `-vv` for trace logging.
-  You can also open an issue at https://github.com/blue-build/cli/issues
-
-Error: Process completed with exit code 1.
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: liquid-os
 description: This is my personal OS image.
@@ -43,24 +24,18 @@ modules:
       packages:
         - starship
         - steam
-        
-- type: script
+
+  - type: script
     snippets:
       - |
-        echo "Installazione Cursor..."
-        # Crea la cartella di destinazione
+        echo "Installazione Cursor (Metodo Compatibile)..."
         mkdir -p /usr/lib/cursor
-        
-        # Scarica l'AppImage direttamente lì
         curl -Lo /usr/lib/cursor/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage"
-        
-        # Rendi eseguibile
         chmod +x /usr/lib/cursor/cursor.appimage
-        
-        # Crea il link simbolico in /usr/bin
         ln -sf /usr/lib/cursor/cursor.appimage /usr/bin/cursor
         
-        # Crea il file .desktop da zero
+        # Creazione file Desktop
+        mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
         Name=Cursor
@@ -69,7 +44,29 @@ modules:
         Type=Application
         Icon=code
         Categories=Development;TextEditor;
-        Comment=AI Powered Code Editor
+        EOF
+
+      - |
+        echo "Forzo configurazione Flatpak per Aurora..."
+        mkdir -p /usr/share/ublue-os
+        cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
+        {
+          "system": {
+            "install": [
+              "org.gnome.Loupe",
+              "org.telegram.desktop",
+              "org.videolan.VLC",
+              "org.kde.krita",
+              "org.darktable.Darktable",
+              "org.blender.Blender",
+              "org.onlyoffice.desktopeditors",
+              "com.transmissionbt.Transmission",
+              "org.jellyfin.JellyfinServer",
+              "org.kde.kdenlive",
+              "fr.handbrake.ghb"
+            ]
+          }
+        }
         EOF
 
   - type: default-flatpaks
