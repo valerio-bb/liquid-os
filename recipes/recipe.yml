@@ -26,34 +26,6 @@ modules:
   - type: script
     snippets:
       - |
-        set -e
-        echo "--- TENTATIVO DOWNLOAD CURSOR (GOLDEN LINK) ---"
-        
-        URL="https://api2.cursor.sh/updates/download/golden/linux-x64/cursor/3.0"
-        
-        curl -L --retry 5 --retry-delay 15 --connect-timeout 60 -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "$URL"
-
-        chmod +x /usr/bin/cursor.appimage
-        
-        echo "--- CREAZIONE WRAPPER ---"
-        cat <<'EOF' > /usr/bin/cursor
-        #!/bin/bash
-        exec /usr/bin/cursor.appimage --no-sandbox "$@"
-        EOF
-        chmod +x /usr/bin/cursor
-        
-        echo "--- CREAZIONE DESKTOP FILE ---"
-        mkdir -p /usr/share/applications
-        cat <<EOF > /usr/share/applications/cursor.desktop
-        [Desktop Entry]
-        Name=Cursor
-        Exec=/usr/bin/cursor %U
-        Terminal=false
-        Type=Application
-        Icon=code
-        Categories=Development;TextEditor;
-        EOF
-
         echo "--- CONFIGURAZIONE FLATPAK ---"
         mkdir -p /usr/share/ublue-os
         cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
