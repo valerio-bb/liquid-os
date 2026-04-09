@@ -28,15 +28,12 @@ modules:
   - type: script
     snippets:
       - |
-        echo "Installazione Cursor (URL Diretto)..."
+        echo "Installazione Cursor..."
         mkdir -p /usr/lib/cursor
-        # Usiamo l'endpoint che restituisce direttamente l'AppImage
         curl -L -f -o /usr/lib/cursor/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
-        
         chmod +x /usr/lib/cursor/cursor.appimage
         ln -sf /usr/lib/cursor/cursor.appimage /usr/bin/cursor
         
-        # Creazione file Desktop
         mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
@@ -49,102 +46,7 @@ modules:
         EOF
 
       - |
-        echo "Configurazione Flatpak per Aurora..."
-        mkdir -p /usr/share/ublue-os
-        cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
-        {
-          "system": {
-            "install": [
-              "org.gnome.Loupe",
-              "org.telegram.desktop",
-              "org.videolan.VLC",
-              "org.kde.krita",
-              "org.darktable.Darktable",
-              "org.blender.Blender",
-              "org.onlyoffice.desktopeditors",
-              "com.transmissionbt.Transmission",
-              "org.jellyfin.JellyfinServer",
-              "org.kde.kdenlive",
-              "fr.handbrake.ghb"
-            ]
-          }
-        }
-        EOF
-
-  - type: default-flatpaks
-    configurations:
-      - notify: true
-        scope: system
-        install:
-          - org.gnome.Loupe
-          - org.telegram.desktop
-          - org.videolan.VLC
-          - org.kde.krita
-          - org.darktable.Darktable
-          - org.blender.Blender
-          - org.onlyoffice.desktopeditors
-          - com.transmissionbt.Transmission
-          - org.jellyfin.JellyfinServer
-          - org.kde.kdenlive
-          - fr.handbrake.ghb
-
-  - type: signing# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-name: liquid-os
-description: This is my personal OS image.
-
-base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
-image-version: stable
-
-modules:
-  - type: files
-    files:
-      - source: system
-        destination: /
-
-  - type: dnf
-    repos:
-      cleanup: true
-      nonfree: negativo17
-      copr:
-        - atim/starship
-      files:
-        - https://negativo17.org/repos/fedora-steam.repo
-    install:
-      skip-unavailable: true
-      packages:
-        - starship
-        - steam
-
-  - |
-        echo "Installazione Cursor (Versione Blindata)..."
-        mkdir -p /usr/lib/cursor
-        
-        # Scarichiamo l'AppImage con parametri di sicurezza
-        # Usiamo l'URL diretto che punta alla versione stabile
-        curl -L -f -o /usr/lib/cursor/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
-        
-        if [ $? -ne 0 ]; then
-          echo "ERRORE: Il download di Cursor è fallito!"
-          exit 1
-        fi
-
-        chmod +x /usr/lib/cursor/cursor.appimage
-        ln -sf /usr/lib/cursor/cursor.appimage /usr/bin/cursor
-        
-        # File Desktop creato da zero
-        mkdir -p /usr/share/applications
-        cat <<EOF > /usr/share/applications/cursor.desktop
-        [Desktop Entry]
-        Name=Cursor
-        Exec=/usr/bin/cursor --no-sandbox %U
-        Terminal=false
-        Type=Application
-        Icon=code
-        Categories=Development;TextEditor;
-        EOF
-
-      - |
-        echo "Forzo configurazione Flatpak per Aurora..."
+        echo "Configurazione Flatpak JSON..."
         mkdir -p /usr/share/ublue-os
         cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
         {
