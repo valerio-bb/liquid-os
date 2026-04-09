@@ -25,18 +25,23 @@ modules:
         - starship
         - steam
 
-  - type: script
-    snippets:
-      - |
-        echo "Installazione Cursor (Fix API track)..."
+  - |
+        echo "Installazione Cursor (Versione Blindata)..."
         mkdir -p /usr/lib/cursor
-        # URL aggiornato con releaseTrack=stable
-        curl -Lfo /usr/lib/cursor/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage&releaseTrack=stable"
         
+        # Scarichiamo l'AppImage con parametri di sicurezza
+        # Usiamo l'URL diretto che punta alla versione stabile
+        curl -L -f -o /usr/lib/cursor/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
+        
+        if [ $? -ne 0 ]; then
+          echo "ERRORE: Il download di Cursor è fallito!"
+          exit 1
+        fi
+
         chmod +x /usr/lib/cursor/cursor.appimage
         ln -sf /usr/lib/cursor/cursor.appimage /usr/bin/cursor
         
-        # Creazione file Desktop
+        # File Desktop creato da zero
         mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
