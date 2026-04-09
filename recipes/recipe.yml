@@ -26,8 +26,20 @@ modules:
   - type: script
     snippets:
       - |
+        # set -e forza il fallimento se un comando non va a buon fine
+        set -e
         echo "--- SCARICO CURSOR ---"
-        curl -L -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
+        
+        # Usiamo l'API ufficiale con headers completi per evitare blocchi
+        curl -L -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage"
+
+        # Controllo di sicurezza: se il file è più piccolo di 100MB, qualcosa è andato storto
+        FILESIZE=$(stat -c%s "/usr/bin/cursor.appimage")
+        if [ $FILESIZE -lt 100000000 ]; then
+            echo "ERRORE: Il file scaricato è troppo piccolo ($FILESIZE byte). Download corrotto."
+            exit 1
+        fi
+
         chmod +x /usr/bin/cursor.appimage
         
         echo "--- CREO WRAPPER ---"
@@ -51,6 +63,7 @@ modules:
 
         echo "--- VERIFICA FINALE ---"
         ls -lh /usr/bin/cursor*
+        
 
       - |
         echo "--- CONFIGURO FLATPAK ---"
