@@ -28,9 +28,11 @@ modules:
   - type: script
     snippets:
       - |
-        echo "Installazione Cursor (Metodo Compatibile)..."
+        echo "Installazione Cursor (Fix API track)..."
         mkdir -p /usr/lib/cursor
-        curl -Lo /usr/lib/cursor/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage"
+        # URL aggiornato con releaseTrack=stable
+        curl -Lfo /usr/lib/cursor/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage&releaseTrack=stable"
+        
         chmod +x /usr/lib/cursor/cursor.appimage
         ln -sf /usr/lib/cursor/cursor.appimage /usr/bin/cursor
         
