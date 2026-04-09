@@ -29,19 +29,15 @@ modules:
     snippets:
       - |
         echo "Installazione Cursor..."
-        mkdir -p /usr/lib/cursor
-        # Scarico l'AppImage
-        curl -L -f -o /usr/lib/cursor/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
-        chmod +x /usr/lib/cursor/cursor.appimage
+        # 1. Scarichiamo l'AppImage direttamente in /usr/bin
+        curl -L -f -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
+        chmod +x /usr/bin/cursor.appimage
         
-        # Invece di un link, creiamo un eseguibile reale in /usr/bin
-        cat <<'EOF' > /usr/bin/cursor
-        #!/bin/bash
-        exec /usr/lib/cursor/cursor.appimage --no-sandbox "$@"
-        EOF
+        # 2. Creiamo lo script che lancia l'AppImage
+        printf '#!/bin/bash\nexec /usr/bin/cursor.appimage --no-sandbox "$@"\n' > /usr/bin/cursor
         chmod +x /usr/bin/cursor
         
-        # Creazione file Desktop
+        # 3. Creiamo il file Desktop
         mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
@@ -54,7 +50,7 @@ modules:
         EOF
 
       - |
-        echo "Configurazione Flatpak JSON..."
+        echo "Configurazione Flatpak..."
         mkdir -p /usr/share/ublue-os
         cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
         {
