@@ -1,29 +1,24 @@
----
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-# image will be published to ghcr.io/<user>/<name>
 name: liquid-os
 description: This is my personal OS image.
 
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: stable
 
-# module configuration, executed in order
-# you can include multiple instances of the same module
 modules:
   - type: files
     files:
       - source: system
-        destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
-        
+        destination: /
+
   - type: dnf
     repos:
-      cleanup: true # clean up added repos after module is done
+      cleanup: true
       nonfree: negativo17
       copr:
         - atim/starship
       files:
         - https://negativo17.org/repos/fedora-steam.repo
-        
     install:
       skip-unavailable: true
       packages:
@@ -34,81 +29,60 @@ modules:
     snippets:
       - |
         echo "Installazione di Cursor..."
-        # Download AppImage
         curl -Lo /tmp/cursor.appimage "https://cursor.com/api/download?platform=linux&format=appimage"
         chmod +x /tmp/cursor.appimage
-        
-        # Extract in /usr/lib
         cd /tmp
         ./cursor.appimage --appimage-extract
-        mv squashfs-root /usr/lib/cursor
+        mkdir -p /usr/lib/cursor
+        mv squashfs-root/* /usr/lib/cursor/
+        ln -sf /usr/lib/cursor/cursor /usr/bin/cursor
         
-        # Symbolic link
-        ln -s /usr/lib/cursor/cursor /usr/bin/cursor
-        
-        # Icon & KDE menu item
+        # Icon & Desktop Entry
         mkdir -p /usr/share/applications
         cp /usr/lib/cursor/cursor.desktop /usr/share/applications/cursor.desktop
-        
-        # Fix path
         sed -i 's|Exec=AppRun|Exec=/usr/bin/cursor --no-sandbox|g' /usr/share/applications/cursor.desktop
         sed -i 's|Icon=cursor|Icon=/usr/lib/cursor/cursor.png|g' /usr/share/applications/cursor.desktop
-        
-        # Clean
         rm /tmp/cursor.appimage
 
-# OLD rpm-ostree        
-#  - type: rpm-ostree
-#    repos:
-#      - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
-#    install:
-#      - micro
-#      - starship
-#    remove:
-#      # example: removing firefox (in favor of the flatpak)
-#      # "firefox" is the main package, "firefox-langpacks" is a dependency
-#      - firefox
-#      - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
-
+      - |
+        echo "Forzo la configurazione Flatpak per Aurora..."
+        # Questo assicura che ujust veda la TUA lista invece di quella di default
+        mkdir -p /usr/share/ublue-os
+        cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
+        {
+          "system": {
+            "install": [
+              "org.gnome.Loupe",
+              "org.telegram.desktop",
+              "org.videolan.VLC",
+              "org.kde.krita",
+              "org.darktable.Darktable",
+              "org.blender.Blender",
+              "org.onlyoffice.desktopeditors",
+              "com.transmissionbt.Transmission",
+              "org.jellyfin.JellyfinServer",
+              "org.kde.kdenlive",
+              "fr.handbrake.ghb"
+            ]
+          }
+        }
+        EOF
 
   - type: default-flatpaks
     configurations:
-      - notify: true # Send notification after install/uninstall is finished (true/false)
+      - notify: true
         scope: system
-        # If no repo information is specified, Flathub will be used by default
-        install: # system flatpaks we want all users to have and not remove
+        install:
           - org.gnome.Loupe
-          - org.telegram.desktop # Telegram Desktop
-          - org.videolan.VLC # VLC Media Player
-          - org.kde.krita # Krita
-          - org.darktable.Darktable # Darktable
-          - org.blender.Blender # Blender
-          - org.onlyoffice.desktopeditors # OnlyOffice Desktop Editors
-          - com.transmissionbt.Transmission # Transmission
-          - org.jellyfin.JellyfinServer # Jellyfin
+          - org.telegram.desktop
+          - org.videolan.VLC
+          - org.kde.krita
+          - org.darktable.Darktable
+          - org.blender.Blender
+          - org.onlyoffice.desktopeditors
+          - com.transmissionbt.Transmission
+          - org.jellyfin.JellyfinServer
           - org.kde.kdenlive
           - fr.handbrake.ghb
-#      - scope: user # Also add Flathub user repo, but no user packages
 
-# OLD V1 default-flatpacks
-#  - type: default-flatpaks
-#    notify: true # Send notification after install/uninstall is finished (true/false)
-#    system:
-#      # If no repo information is specified, Flathub will be used by default
-#      install:
-#        - org.mozilla.firefox
-#        - org.gnome.Loupe
-#        - org.telegram.desktop # Telegram Desktop
-#        - org.videolan.VLC # VLC Media Player
-#        - org.kde.krita # Krita
-#        - org.darktable.Darktable # Darktable
-#        - org.blender.Blender # Blender
-#        - org.onlyoffice.desktopeditors # OnlyOffice Desktop Editors
-#        - com.transmissionbt.Transmission # Transmission
-#        - org.jellyfin.JellyfinServer # Jellyfin
-#      remove:
-#        - org.gnome.eog
-#    user: {} # Also add Flathub user repo, but no user packages
-
-  - type: signing # this sets up the proper policy & signing files for signed images to work fully
-
+  - type: signing
