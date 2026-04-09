@@ -27,14 +27,19 @@ modules:
     snippets:
       - |
         set -e
-        echo "--- DOWNLOAD CURSOR ---"
-        # URL diretto al binario x64 (salta i redirect API che danno errore 400)
-        curl -L -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
+        echo "--- TENTATIVO DOWNLOAD CURSOR ---"
         
+        # Usiamo curl con 5 tentativi automatici in caso di errore DNS o rete
+        # Se il primo URL fallisce, prova il secondo (fallback)
+        URL1="https://downloader.cursor.sh/linux/appImage/x64"
+        URL2="https://cursor.com/api/download?platform=linux&format=appimage"
+        
+        curl -L --retry 5 --retry-delay 10 -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "$URL1" || \
+        curl -L --retry 5 --retry-delay 10 -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "$URL2"
+
         chmod +x /usr/bin/cursor.appimage
         
         echo "--- CREAZIONE WRAPPER ---"
-        # Creiamo lo script di lancio
         cat <<'EOF' > /usr/bin/cursor
         #!/bin/bash
         exec /usr/bin/cursor.appimage --no-sandbox "$@"
