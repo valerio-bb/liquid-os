@@ -23,13 +23,19 @@ modules:
   - type: script
     snippets:
       - |
-        set -e
-        echo "Installazione Cursor..."
-        curl -L -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
-        if [ ! -f /usr/bin/cursor.appimage ]; then echo "Errore download"; exit 1; fi
+        echo "--- INSTALLAZIONE CURSOR ---"
+        # Download diretto
+        curl -L -f -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
         chmod +x /usr/bin/cursor.appimage
-        printf '#!/bin/bash\nexec /usr/bin/cursor.appimage --no-sandbox "$@"\n' > /usr/bin/cursor
+        
+        # Creazione wrapper con cat (più sicuro di printf)
+        cat <<'EOF' > /usr/bin/cursor
+        #!/bin/bash
+        exec /usr/bin/cursor.appimage --no-sandbox "$@"
+        EOF
         chmod +x /usr/bin/cursor
+        
+        # Creazione file desktop
         mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
@@ -40,8 +46,8 @@ modules:
         Icon=code
         Categories=Development;TextEditor;
         EOF
-      - |
-        echo "Configurazione Flatpak..."
+
+        echo "--- CONFIGURAZIONE FLATPAK ---"
         mkdir -p /usr/share/ublue-os
         cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
         {
