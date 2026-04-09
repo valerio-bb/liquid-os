@@ -1,3 +1,22 @@
+[07:50:45 DEBUG] => Retrieving schema from https://schema.blue-build.org/modules/rpm-ostree-v1.json
+[07:50:45 DEBUG] => Retrieving schema from https://schema.blue-build.org/modules/rpm-ostree-latest.json
+[07:50:45 DEBUG] => Retrieving schema from https://schema.blue-build.org/modules/dnf-v1.json
+[07:50:45 DEBUG] => Validating recipe ./recipes/recipe.yml
+[07:50:45 ERROR] => Failed:
+  × Recipe ./recipes/recipe.yml failed to validate
+  ╰─▶   × Failed to deserialize recipe ./recipes/recipe.yml
+        ╰─▶ did not find expected key at line 28 column 1, while parsing a block mapping at line 2 column 1
+      
+        Try running with `-vv` for trace logging.
+        You can also open an issue at https://github.com/blue-build/cli/issues
+
+  help: Use `bluebuild validate --all-errors ./recipes/recipe.yml` to view more information.
+        If you're using a local module, be sure to add `source: local` to the module entry
+
+  Try running with `-vv` for trace logging.
+  You can also open an issue at https://github.com/blue-build/cli/issues
+
+Error: Process completed with exit code 1.
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: liquid-os
 description: This is my personal OS image.
