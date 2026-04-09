@@ -1,26 +1,35 @@
-- type: script
+name: liquid-os
+description: This is my personal OS image.
+base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
+image-version: stable
+modules:
+  - type: files
+    files:
+      - source: system
+        destination: /
+  - type: dnf
+    repos:
+      cleanup: true
+      nonfree: negativo17
+      copr:
+        - atim/starship
+      files:
+        - https://negativo17.org/repos/fedora-steam.repo
+    install:
+      skip-unavailable: true
+      packages:
+        - starship
+        - steam
+  - type: script
     snippets:
       - |
         set -e
         echo "Installazione Cursor..."
-        
-        # 1. Download con User-Agent e controllo errori
-        # Usiamo un URL alternativo che spesso è più stabile
         curl -L -f -A "Mozilla/5.0" -o /usr/bin/cursor.appimage "https://downloader.cursor.sh/linux/appImage/x64"
-        
-        # Verifica che il file sia stato effettivamente creato
-        if [ ! -f /usr/bin/cursor.appimage ]; then
-          echo "ERRORE: Download fallito, il file non esiste!"
-          exit 1
-        fi
-        
+        if [ ! -f /usr/bin/cursor.appimage ]; then echo "Errore download"; exit 1; fi
         chmod +x /usr/bin/cursor.appimage
-        
-        # 2. Creazione Wrapper
         printf '#!/bin/bash\nexec /usr/bin/cursor.appimage --no-sandbox "$@"\n' > /usr/bin/cursor
         chmod +x /usr/bin/cursor
-        
-        # 3. File Desktop
         mkdir -p /usr/share/applications
         cat <<EOF > /usr/share/applications/cursor.desktop
         [Desktop Entry]
@@ -31,9 +40,8 @@
         Icon=code
         Categories=Development;TextEditor;
         EOF
-
       - |
-        echo "Configurazione Flatpak JSON..."
+        echo "Configurazione Flatpak..."
         mkdir -p /usr/share/ublue-os
         cat <<EOF > /usr/share/ublue-os/default-flatpaks.json
         {
@@ -54,3 +62,20 @@
           }
         }
         EOF
+  - type: default-flatpaks
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - org.gnome.Loupe
+          - org.telegram.desktop
+          - org.videolan.VLC
+          - org.kde.krita
+          - org.darktable.Darktable
+          - org.blender.Blender
+          - org.onlyoffice.desktopeditors
+          - com.transmissionbt.Transmission
+          - org.jellyfin.JellyfinServer
+          - org.kde.kdenlive
+          - fr.handbrake.ghb
+  - type: signing
