@@ -64,6 +64,7 @@ modules:
           - com.transmissionbt.Transmission
           - org.jellyfin.JellyfinServer
           - org.kde.kdenlive
+          - com.blackmagic.Resolve
           - fr.handbrake.ghb
 
   - type: signing
