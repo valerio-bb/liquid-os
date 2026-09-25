@@ -17,6 +17,7 @@ modules:
     install:
       skip-unavailable: true
       packages:
+        - zenity
         - starship
         
   - type: default-flatpaks
