@@ -1,7 +1,7 @@
 name: liquid-os
 description: My personal OS image.
-base-image: ghcr.io/ublue-os/aurora-dx-hwe-nvidia
-image-version: stable
+base-image: ghcr.io/ublue-os/aurora-dx-hwe-nvidia:stable
+#image-version: stable
 
 modules:
   - type: files
