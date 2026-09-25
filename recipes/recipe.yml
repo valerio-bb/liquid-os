@@ -32,7 +32,6 @@ modules:
         {
           "system": {
             "install": [
-              "org.gnome.Loupe",
               "org.telegram.desktop",
               "org.videolan.VLC",
               "org.kde.krita",
@@ -43,7 +42,12 @@ modules:
               "org.jellyfin.JellyfinServer",
               "org.kde.kdenlive",
               "com.blackmagic.Resolve",
-              "fr.handbrake.ghb"
+              "fr.handbrake.ghb",
+              "com.github.finefindus.eyedropper",
+              "org.mozilla.thunderbird_esr",
+              "dev.pulsar_edit.Pulsar",
+              "com.heroicgameslauncher.hgl",
+              "net.lutris.Lutris"
             ]
           }
         }
@@ -54,7 +58,6 @@ modules:
       - notify: true
         scope: system
         install:
-          - org.gnome.Loupe
           - org.telegram.desktop
           - org.videolan.VLC
           - org.kde.krita
@@ -66,5 +69,10 @@ modules:
           - org.kde.kdenlive
           - com.blackmagic.Resolve
           - fr.handbrake.ghb
+          - com.github.finefindus.eyedropper
+          - org.mozilla.thunderbird_esr
+          - dev.pulsar_edit.Pulsar
+          - com.heroicgameslauncher.hgl
+          - net.lutris.Lutris
 
   - type: signing
