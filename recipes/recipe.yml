@@ -33,7 +33,6 @@ modules:
           - com.transmissionbt.Transmission
           - org.jellyfin.JellyfinServer
           - org.kde.kdenlive
-          - com.blackmagic.Resolve
           - fr.handbrake.ghb
           - com.github.finefindus.eyedropper
           - org.mozilla.thunderbird_esr
