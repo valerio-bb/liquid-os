@@ -20,25 +20,25 @@ modules:
         - starship
         
   - type: default-flatpaks
-    config:
-      notify: true
-    system:
-      install:
-        - org.telegram.desktop
-        - org.videolan.VLC
-        - org.kde.krita
-        - org.darktable.Darktable
-        - org.blender.Blender
-        - org.onlyoffice.desktopeditors
-        - com.transmissionbt.Transmission
-        - org.jellyfin.JellyfinServer
-        - org.kde.kdenlive
-        - com.blackmagic.Resolve
-        - fr.handbrake.ghb
-        - com.github.finefindus.eyedropper
-        - org.mozilla.thunderbird_esr
-        - dev.pulsar_edit.Pulsar
-        - com.heroicgameslauncher.hgl
-        - net.lutris.Lutris
+    configurations:
+      - notify: false
+        scope: system
+        install:
+          - org.telegram.desktop
+          - org.videolan.VLC
+          - org.kde.krita
+          - org.darktable.Darktable
+          - org.blender.Blender
+          - org.onlyoffice.desktopeditors
+          - com.transmissionbt.Transmission
+          - org.jellyfin.JellyfinServer
+          - org.kde.kdenlive
+          - com.blackmagic.Resolve
+          - fr.handbrake.ghb
+          - com.github.finefindus.eyedropper
+          - org.mozilla.thunderbird_esr
+          - dev.pulsar_edit.Pulsar
+          - com.heroicgameslauncher.hgl
+          - net.lutris.Lutris
 
   - type: signing
