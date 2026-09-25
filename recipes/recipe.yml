@@ -20,7 +20,8 @@ modules:
         - starship
         
   - type: default-flatpaks
-    notify: true
+    config:
+      notify: true
     system:
       install:
         - org.telegram.desktop
