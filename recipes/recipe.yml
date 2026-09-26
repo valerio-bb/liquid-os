@@ -28,6 +28,7 @@ modules:
           - org.telegram.desktop
           - org.videolan.VLC
           - org.kde.krita
+          - org.inkscape.Inkscape
           - org.darktable.Darktable
           - org.blender.Blender
           - org.onlyoffice.desktopeditors
