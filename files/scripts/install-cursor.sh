@@ -3,6 +3,7 @@ set -oue pipefail
 
 echo "==> Installazione di Cursor in corso..."
 
+# scriptino py
 python3 - << 'EOF'
 import urllib.request
 import json
@@ -12,7 +13,6 @@ api_url = "https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=s
 headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"}
 
 try:
-    # 1. Ottiene il link di download dall'API
     req_api = urllib.request.Request(api_url, headers=headers)
     with urllib.request.urlopen(req_api) as response:
         data = json.loads(response.read().decode())
@@ -22,7 +22,6 @@ try:
             sys.exit(1)
         print(f"Scaricamento dal link ufficiale: {download_url}")
 
-    # 2. Scarica il file usando gli stessi header per superare il blocco 403 della CDN
     req_download = urllib.request.Request(download_url, headers=headers)
     with urllib.request.urlopen(req_download) as response, open("/tmp/cursor.AppImage", "wb") as out_file:
         while True:
@@ -50,6 +49,7 @@ cd /tmp
 mkdir -p /usr/lib/cursor
 cp -r /tmp/squashfs-root/* /usr/lib/cursor/
 
+mkdir -p /usr/local/bin
 ln -sf /usr/lib/cursor/cursor /usr/local/bin/cursor
 
 mkdir -p /usr/share/applications
