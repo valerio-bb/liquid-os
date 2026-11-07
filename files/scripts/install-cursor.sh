@@ -3,9 +3,15 @@ set -oue pipefail
 
 echo "==> Installazione di Cursor..."
 
-CURSOR_URL="https://www.cursor.com/api/download?platform=linux-x64&releaseType=stable"
+DOWNLOAD_URL=$(curl -s "https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=stable" | grep -oE '"downloadUrl":"[^"]+' | cut -d'"' -f4)
 
-curl -L -o /tmp/cursor.AppImage "$CURSOR_URL"
+if [ -z "$DOWNLOAD_URL" ]; then
+    echo "Errore critico: Impossibile recuperare l'URL di download di Cursor dall'API."
+    exit 1
+fi
+
+echo "Scaricamento di Cursor da: $DOWNLOAD_URL"
+curl -L -o /tmp/cursor.AppImage "$DOWNLOAD_URL"
 chmod +x /tmp/cursor.AppImage
 
 cd /tmp
