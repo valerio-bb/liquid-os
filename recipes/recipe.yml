@@ -8,9 +8,11 @@ modules:
     files:
       - source: system
         destination: /
-  - type: copy
-    src: https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/master/60-openrgb.rules
-    dest: /usr/lib/udev/rules.d/60-openrgb.rules
+
+  - type: files
+    files:
+      - source: system
+        destination: "/"
 
   - type: dnf
     repos:
