@@ -41,5 +41,8 @@ modules:
           - dev.pulsar_edit.Pulsar
           - com.heroicgameslauncher.hgl
           - net.lutris.Lutris
+  - type: script
+    scripts:
+      - install-whatrust.sh
 
   - type: signing
