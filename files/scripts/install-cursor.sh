@@ -3,7 +3,7 @@ set -oue pipefail
 
 echo "==> Installazione di Cursor..."
 
-CURSOR_URL="https://downloader.cursor.sh/linux/appImage/x64"
+CURSOR_URL="https://www.cursor.com/api/download?platform=linux-x64&releaseType=stable"
 
 curl -L -o /tmp/cursor.AppImage "$CURSOR_URL"
 chmod +x /tmp/cursor.AppImage
