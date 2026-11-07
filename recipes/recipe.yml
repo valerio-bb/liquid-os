@@ -8,6 +8,10 @@ modules:
     files:
       - source: system
         destination: /
+  - type: copy
+    files:
+      - url: https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/master/60-openrgb.rules
+        destination: /usr/lib/udev/rules.d/60-openrgb.rules
 
   - type: dnf
     repos:
@@ -41,8 +45,15 @@ modules:
           - dev.pulsar_edit.Pulsar
           - com.heroicgameslauncher.hgl
           - net.lutris.Lutris
+          - com.visualstudio.code
+          - org.signal.Signal
+          - com.obsproject.Studio
+          - dev.pulsar_edit.Pulsar
+          - org.openrgb.OpenRGB
+
   - type: script
     scripts:
       - install-whatrust.sh
+      - install-cursor.sh
 
   - type: signing
