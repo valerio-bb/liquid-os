@@ -3,17 +3,26 @@ set -oue pipefail
 
 echo "==> Installazione di Cursor..."
 
-DOWNLOAD_URL=$(curl -s "https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=stable" | grep -oE '"downloadUrl":"[^"]+' | cut -d'"' -f4)
+USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+CURSOR_URL="https://downloader.cursor.sh/linux/appImage/x64"
 
-if [ -z "$DOWNLOAD_URL" ]; then
-    echo "Errore critico: Impossibile recuperare l'URL di download di Cursor dall'API."
+echo "Scaricamento di Cursor in corso..."
+curl -sL -A "$USER_AGENT" -o /tmp/cursor.AppImage "$CURSOR_URL"
+
+if [ ! -s /tmp/cursor.AppImage ]; then
+    echo "Errore: Il file scaricato è vuoto."
     exit 1
 fi
 
-echo "Scaricamento di Cursor da: $DOWNLOAD_URL"
-curl -L -o /tmp/cursor.AppImage "$DOWNLOAD_URL"
+if head -n 1 /tmp/cursor.AppImage | grep -q "{" ; then
+    echo "Errore: Risposta non valida ricevuta dal server:"
+    cat /tmp/cursor.AppImage
+    exit 1
+fi
+
 chmod +x /tmp/cursor.AppImage
 
+echo "Estrazione dell'AppImage..."
 cd /tmp
 ./cursor.AppImage --appimage-extract > /dev/null
 
