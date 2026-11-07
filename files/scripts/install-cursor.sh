@@ -3,29 +3,36 @@ set -oue pipefail
 
 echo "==> Installazione di Cursor in corso..."
 
-# scriptino py
 python3 - << 'EOF'
 import urllib.request
 import json
 import sys
 
 api_url = "https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=stable"
-req = urllib.request.Request(
-    api_url,
-    headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"}
-)
+headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"}
 
 try:
-    with urllib.request.urlopen(req) as response:
+    # 1. Ottiene il link di download dall'API
+    req_api = urllib.request.Request(api_url, headers=headers)
+    with urllib.request.urlopen(req_api) as response:
         data = json.loads(response.read().decode())
         download_url = data.get("downloadUrl")
         if not download_url:
             print(f"Errore: downloadUrl non trovato nella risposta API: {data}")
             sys.exit(1)
         print(f"Scaricamento dal link ufficiale: {download_url}")
-        urllib.request.urlretrieve(download_url, "/tmp/cursor.AppImage")
+
+    # 2. Scarica il file usando gli stessi header per superare il blocco 403 della CDN
+    req_download = urllib.request.Request(download_url, headers=headers)
+    with urllib.request.urlopen(req_download) as response, open("/tmp/cursor.AppImage", "wb") as out_file:
+        while True:
+            chunk = response.read(8192)
+            if not chunk:
+                break
+            out_file.write(chunk)
+
 except Exception as e:
-    print(f"Errore durante la chiamata API di Cursor: {e}")
+    print(f"Errore durante il download di Cursor: {e}")
     sys.exit(1)
 EOF
 
