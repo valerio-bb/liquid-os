@@ -30,6 +30,9 @@ modules:
         - kio-gdrive
         - kdepim-addons
         - kaccounts-integration-qt6
+        - kdepim-runtime
+        - akonadi
+        - kalendar
         
   - type: default-flatpaks
     configurations:
