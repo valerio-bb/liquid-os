@@ -24,6 +24,12 @@ modules:
       packages:
         - zenity
         - starship
+        - kaccounts-integration
+        - kaccounts-providers
+        - signon-ui
+        - kio-gdrive
+        - kdepim-addons
+        - kaccounts-integration-qt6
         
   - type: default-flatpaks
     configurations:
