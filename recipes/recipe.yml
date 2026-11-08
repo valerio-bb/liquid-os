@@ -31,8 +31,10 @@ modules:
         - kdepim-addons
         - kaccounts-integration-qt6
         - kdepim-runtime
-        - akonadi
         - kalendar
+        - akonadi
+        - akonadi-calendar
+        - akonadi-import-wizard
         
   - type: default-flatpaks
     configurations:
