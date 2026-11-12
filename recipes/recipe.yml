@@ -35,6 +35,10 @@ modules:
         - akonadi
         - akonadi-calendar
         - akonadi-import-wizard
+        /* webkit shit */
+        - gstreamer1-plugins-base
+        - gstreamer1-plugins-good
+        - gstreamer1-plugins-bad-free
         
   - type: default-flatpaks
     configurations:
@@ -57,7 +61,6 @@ modules:
           - dev.pulsar_edit.Pulsar
           - com.heroicgameslauncher.hgl
           - net.lutris.Lutris
-          - com.visualstudio.code
           - org.signal.Signal
           - com.obsproject.Studio
           - dev.pulsar_edit.Pulsar
