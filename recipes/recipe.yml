@@ -35,7 +35,7 @@ modules:
         - akonadi
         - akonadi-calendar
         - akonadi-import-wizard
-        /* webkit shit */
+        # webkit shit
         - gstreamer1-plugins-base
         - gstreamer1-plugins-good
         - gstreamer1-plugins-bad-free
