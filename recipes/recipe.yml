@@ -58,9 +58,9 @@ modules:
           - org.kde.kdenlive
           - fr.handbrake.ghb
           - com.github.finefindus.eyedropper
-          - org.mozilla.thunderbird_esr
           - dev.pulsar_edit.Pulsar
           - com.heroicgameslauncher.hgl
+          - com.vivaldi.Vivaldi
           - net.lutris.Lutris
           - org.signal.Signal
           - com.obsproject.Studio
