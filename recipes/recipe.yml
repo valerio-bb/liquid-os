@@ -46,6 +46,7 @@ modules:
         scope: system
         install:
           - org.telegram.desktop
+          - com.rtosta.zapzap
           - org.videolan.VLC
           - org.kde.krita
           - org.inkscape.Inkscape
